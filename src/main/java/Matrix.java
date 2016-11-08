@@ -38,31 +38,22 @@ class Matrix implements Serializable {
         return data;
     }
 
-    void print(Matrix C) {
-
-        for (int i = 0; i < C.N; i++) {
-            System.out.println(Arrays.toString(C.data[i]));
+    void print() {
+        for (int i = 0; i < this.N; i++) {
+            System.out.println(Arrays.toString(this.data[i]));
         }
         System.out.println();
-
-        /*for (int i = 0; i < C.N; i++) {
-            for (int j = 0; j < C.M; j++) {
-                System.out.print(C.data[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();*/
     }
 
-    static Matrix summation(Matrix A, Matrix B) {
+    Matrix summation(Matrix B) {
 
-        if (A.N != B.N || A.M != B.M) throw new IllegalArgumentException("Sizes of matrix must be equal");
+        if (this.N != B.N || this.M != B.M) throw new IllegalArgumentException("Sizes of matrix must be equal");
 
-        Matrix C = new Matrix(A.N, A.M);
+        Matrix C = new Matrix(this.N, this.M);
 
-        for (int i = 0; i < A.N; i++) {
-            for (int j = 0; j < A.M; j++) {
-                C.data[i][j] = A.data[i][j] + B.data[i][j];
+        for (int i = 0; i < this.N; i++) {
+            for (int j = 0; j < this.M; j++) {
+                C.data[i][j] = this.data[i][j] + B.data[i][j];
             }
         }
 
@@ -75,39 +66,37 @@ class Matrix implements Serializable {
         A.data[j][i] = keeper;
     }
 
-    static Matrix transposing(Matrix A) {
-
-        if (A.N == A.M) {
-            for (int i = 0; i < A.N; i++) {
-                for (int j = i + 1; j < A.M; j++) {
-                    swap(A, i, j);
+    Matrix transposing() {
+        if (this.N == this.M) {
+            for (int i = 0; i < this.N; i++) {
+                for (int j = i + 1; j < this.M; j++) {
+                    swap(this, i, j);
                 }
             }
-            return A;
+            return this;
         } else {
-            Matrix Transposed = new Matrix(A.M, A.N);
+            Matrix Transposed = new Matrix(this.M, this.N);
 
-            for (int i = 0; i < A.N; i++) {
-                for (int j = 0; j < A.M; j++) {
-                    Transposed.data[j][i] = A.data[i][j];
+            for (int i = 0; i < this.N; i++) {
+                for (int j = 0; j < this.M; j++) {
+                    Transposed.data[j][i] = this.data[i][j];
                 }
             }
             return Transposed;
         }
-
     }
 
-    static Matrix multplication(Matrix A, Matrix B) {
+    Matrix multiplication(Matrix B) {
 
-        if (A.M != B.N) throw new IllegalArgumentException("Sizes of matrix must be equal " + A.M + " != " + B.N + "");
+        if (this.M != B.N) throw new IllegalArgumentException("Sizes of matrix must be equal " + this.M + " != " + B.N + "");
 
-        Matrix C = new Matrix(A.N, B.M);
+        Matrix C = new Matrix(this.N, B.M);
         int collector = 0;
 
         for (int i = 0; i < C.N; i++) {
             for (int j = 0; j < C.M; j++) {
-                for (int k = 0; k < A.M; k++) {
-                    collector += A.data[i][k] * B.data[k][j];
+                for (int k = 0; k < this.M; k++) {
+                    collector += this.data[i][k] * B.data[k][j];
                 }
                 C.data[i][j] = collector;
                 collector = 0;
