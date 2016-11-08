@@ -13,12 +13,10 @@ public class Main {
     public static void main(String[] args) throws MyException, IOException, ClassNotFoundException {
 
 
-
         Matrix A = Matrix.randomMatrix(3, 3);
         Matrix B = Matrix.randomMatrix(3, 3);
         Matrix D = Vector.randomVector(4);
         Matrix C;
-
 
 
         System.out.println("Матрица А");
@@ -46,17 +44,19 @@ public class Main {
             System.out.println("Результат перемножения двух матриц");
             C.print();
 
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Serialize.txt"));
+            try (FileOutputStream fos = new FileOutputStream("Serialize.txt")) {
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(C);
+                oos.close();
+            }
 
-            // serialize array
-            oos.writeObject(C);
-            oos.close();
-
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("Serialize.txt"));    // deserialize array
-            Matrix E = (Matrix) ois.readObject();
-            ois.close();
-            System.out.println("Десериализация результата перемножения двух матриц");
-            E.print();
+            try (FileInputStream fis = new FileInputStream("Serialize.txt")) {
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Matrix E = (Matrix) ois.readObject();
+                System.out.println("Десериализация результата перемножения двух матриц");
+                E.print();
+                ois.close();
+            }
 
         } catch (IllegalArgumentException e) {
             log.warning("Соответствующие размеры матриц не совпадают в методе перемножения матриц!");

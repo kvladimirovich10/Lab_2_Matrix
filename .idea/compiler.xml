@@ -25,9 +25,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Matrix" target="1.5" />
-      <module name="Matrix (1)" target="1.5" />
-      <module name="Matrix_project" target="1.5" />
+      <module name="Matrix_project" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
